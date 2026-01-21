@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <title>MD5 File Checksum — Secure & Fast Integrity Check</title>
+
+    <meta name="title" content="MD5 File Checksum — Secure & Fast Integrity Check">
+    <meta name="description" content="Check file integrity with MD5 locally. No file upload required. 100% Private.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://md5-file-checksum.pvdspot.com/">
+    <meta property="og:title" content="MD5 File Checksum — Secure & Fast Integrity Check">
+    <meta property="og:description"
+        content="Check file integrity with MD5 locally. No file upload required. 100% Private.">
+    <meta property="og:image" content="https://md5-file-checksum.pvdspot.com/og-image.png">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://md5-file-checksum.pvdspot.com/">
+    <meta property="twitter:title" content="MD5 File Checksum — Secure & Fast Integrity Check">
+    <meta property="twitter:description"
+        content="Check file integrity with MD5 locally. No file upload required. 100% Private.">
+    <meta property="twitter:image" content="https://md5-file-checksum.pvdspot.com/og-image.png">
+
+    <link rel="canonical" href="https://md5-file-checksum.pvdspot.com/">
+
+    <meta name="robots" content="index, follow">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#a855f7',
+                        accent: '#ec4899',
+                    },
+                    borderRadius: { '4xl': '2rem' }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.5s ease;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .dark .mesh-bg {
+            background-color: #020617;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+        }
+
+        .mesh-bg {
+            background-color: #f8fafc;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        }
+
+        #cookieBanner {
+            bottom: -100%;
+            transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #cookieBanner.show {
+            bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body class="mesh-bg text-slate-900 dark:text-slate-200 min-h-screen relative">
+
+    <nav class="p-6">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2 group cursor-pointer">
+                <a href="/"><span class="text-xl font-extrabold tracking-tighter dark:text-white uppercase">MD5 File
+                        <span class="text-primary">Checksum</span></span></a>
+            </div>
+            <button onclick="toggleDarkMode()"
+                class="p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:scale-110 transition-all">
+                <i data-lucide="sun" id="sun-icon" class="hidden w-5 h-5 text-amber-500"></i>
+                <i data-lucide="moon" id="moon-icon" class="w-5 h-5 text-indigo-400"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 pt-12 pb-20">
+        <header class="text-center mb-16 animate__animated animate__fadeIn">
+            <h1 class="text-5xl md:text-7xl font-black dark:text-white mb-6 tracking-tight">MD5 File <br><span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent">Checksum.</span>
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg italic">Private, Secure, and 100% Browser-based.</p>
+        </header>
+
+        <section class="animate__animated animate__fadeInUp">
+            <div class="glass-card rounded-[3rem] p-3 md:p-8 shadow-2xl">
+                <div
+                    class="bg-white/50 dark:bg-slate-900/40 rounded-[2.5rem] p-8 md:p-12 border border-black/5 dark:border-white/5">
+                    <div id="dropZone"
+                        class="group relative border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-[2rem] p-12 text-center transition-all hover:border-primary/50 hover:bg-primary/5 cursor-pointer">
+                        <input type="file" id="fileInput" class="hidden">
+                        <div class="flex flex-col items-center gap-6">
+                            <div
+                                class="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-3xl flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                                <i data-lucide="file-plus" class="w-10 h-10 text-primary"></i>
+                            </div>
+                            <h3 class="text-xl font-bold dark:text-white">Drop file here or <span
+                                    class="text-primary underline">Browse</span></h3>
+                        </div>
+                    </div>
+
+                    <div id="loading" class="hidden mt-12 text-center">
+                        <div
+                            class="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin mx-auto">
+                        </div>
+                        <p class="mt-4 font-black text-[10px] tracking-widest text-primary">Computing Hash...
+                        </p>
+                    </div>
+
+                    <div id="resultArea" class="hidden mt-12 space-y-6">
+                        <div
+                            class="p-6 md:p-8 bg-slate-100/50 dark:bg-white/5 rounded-3xl border border-black/5 dark:border-white/10">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-[10px] font-black tracking-widest text-slate-500">MD5
+                                    Checksum</span>
+                                <div class="relative">
+                                    <button id="copyBtn"
+                                        class="flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-full text-xs font-bold hover:bg-primary/90 transition-all active:scale-95">
+                                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> <span id="btnText">Copy</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="md5Value" class="mono text-xl md:text-2xl font-bold break-all dark:text-white">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-24">
+            <div class="flex items-center gap-4 mb-10">
+                <div class="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+                <h2 class="text-2xl font-bold dark:text-white tracking-tighter">How it works</h2>
+                <div class="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center p-6 bg-white/10 rounded-3xl"><i data-lucide="mouse-pointer-click"
+                        class="mx-auto mb-4 text-primary"></i>
+                    <h4 class="font-bold dark:text-white">1. Select</h4>
+                    <p class="text-sm text-slate-500">Pick any file from your computer.</p>
+                </div>
+                <div class="text-center p-6 bg-white/10 rounded-3xl"><i data-lucide="shield-check"
+                        class="mx-auto mb-4 text-secondary"></i>
+                    <h4 class="font-bold dark:text-white">2. Process</h4>
+                    <p class="text-sm text-slate-500">Hash is generated locally via Javascript.</p>
+                </div>
+                <div class="text-center p-6 bg-white/10 rounded-3xl"><i data-lucide="check-circle"
+                        class="mx-auto mb-4 text-accent"></i>
+                    <h4 class="font-bold dark:text-white">3. Done</h4>
+                    <p class="text-sm text-slate-500">Compare results instantly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-20 space-y-4">
+            <div class="flex items-center gap-4 mb-10">
+                <div class="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+                <h2 class="text-2xl font-bold dark:text-white tracking-tighter">FAQs</h2>
+                <div class="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+            </div>
+            <details class="group glass-card rounded-3xl p-6 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold dark:text-white">Is it safe for sensitive
+                    files?<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="mt-4 text-slate-500 text-sm">Absolutely. Your file is never uploaded to any server. All
+                    calculations happen within your browser's memory using the FileReader API.</p>
+            </details>
+            <details class="group glass-card rounded-3xl p-6 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold dark:text-white">Can MD5 be reversed?<i
+                        data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary>
+                <p class="mt-4 text-slate-500 text-sm">MD5 is a one-way cryptographic hash function. While not
+                    "reversible," weak passwords can be cracked using rainbow tables. It is best used for integrity
+                    checks, not encryption.</p>
+            </details>
+            <details class="group glass-card rounded-3xl p-6 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold dark:text-white">What is a "Collision"?<i
+                        data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i></summary>
+                <p class="mt-4 text-slate-500 text-sm">A collision occurs when two different files produce the same MD5
+                    hash. While rare, MD5 is no longer collision-resistant, which is why SHA-256 is preferred for
+                    high-security needs.</p>
+            </details>
+            <details class="group glass-card rounded-3xl p-6 cursor-pointer">
+                <summary class="flex justify-between items-center font-bold dark:text-white">What is the file size
+                    limit?<i data-lucide="chevron-down" class="group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="mt-4 text-slate-500 text-sm">The limit depends on your browser's RAM. Most modern browsers can
+                    handle files up to 2GB. For larger files, the page might become unresponsive during the calculation.
+                </p>
+            </details>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-12 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <p class="text-xs font-black tracking-widest text-slate-400">©
+                    <script>document.write(new Date().getFullYear())</script> <a href="/" class="hover:text-primary">MD5
+                        File Checksum</a>
+                </p>
+            </div>
+            <div class="flex gap-8 text-[10px] font-bold tracking-widest">
+                <a href="https://pvdspot.com/privacy-policy.html" target="_blank"
+                    class="text-slate-500 hover:text-primary">Privacy Policy</a>
+                <a href="https://pvdspot.com/terms-of-use.html" target="_blank"
+                    class="text-slate-500 hover:text-primary">Terms of Use</a>
+                <a href="https://pvdspot.com/about-us.html" target="_blank"
+                    class="text-slate-500 hover:text-primary">About Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="cookieBanner"
+        class="fixed left-1/2 -translate-x-1/2 w-[90%] max-w-2xl glass-card rounded-3xl p-6 shadow-2xl z-50 flex flex-col md:flex-row items-center gap-6 border border-primary/20">
+        <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="cookie" class="text-primary w-5 h-5"></i>
+                <h5 class="font-extrabold uppercase text-xs tracking-widest dark:text-white">Cookie Policy</h5>
+            </div>
+            <p class="text-sm text-slate-600 dark:text-slate-400">
+                We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our
+                traffic. By clicking <strong>Accept All</strong>, you consent to our use of cookies.
+            </p>
+        </div>
+        <div class="flex gap-3 w-full md:w-auto">
+            <button onclick="acceptCookies()"
+                class="flex-1 md:flex-none px-8 py-3 btn-gradient text-white text-xs font-black uppercase tracking-widest rounded-2xl hover:scale-105 transition-all active:scale-95 shadow-lg shadow-primary/20">
+                Accept All
+            </button>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            document.getElementById('sun-icon').classList.toggle('hidden', !isDark);
+            document.getElementById('moon-icon').classList.toggle('hidden', isDark);
+        }
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('sun-icon').classList.remove('hidden');
+            document.getElementById('moon-icon').classList.add('hidden');
+        }
+
+        const cookieBanner = document.getElementById('cookieBanner');
+
+        window.addEventListener('load', () => {
+            if (!localStorage.getItem('cookieAccepted')) {
+                setTimeout(() => {
+                    cookieBanner.classList.add('show');
+                }, 1000);
+            }
+        });
+
+        function acceptCookies() {
+            localStorage.setItem('cookieAccepted', 'true');
+            cookieBanner.classList.remove('show');
+            setTimeout(() => cookieBanner.remove(), 500);
+        }
+
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const md5Value = document.getElementById('md5Value');
+
+        function hashFile(file) {
+            if (!file) return;
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('resultArea').classList.add('hidden');
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const wa = CryptoJS.lib.WordArray.create(e.target.result);
+                const hash = CryptoJS.MD5(wa).toString();
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('resultArea').classList.remove('hidden');
+                    md5Value.textContent = hash;
+                }, 600);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        fileInput.onchange = (e) => hashFile(e.target.files[0]);
+        dropZone.onclick = () => fileInput.click();
+        dropZone.ondragover = (e) => { e.preventDefault(); dropZone.classList.add('border-primary'); };
+        dropZone.ondrop = (e) => { e.preventDefault(); hashFile(e.dataTransfer.files[0]); };
+
+        document.getElementById('copyBtn').addEventListener('click', async () => {
+            const textToCopy = md5Value.innerText;
+            const btn = document.getElementById('copyBtn');
+            const btnText = document.getElementById('btnText');
+
+            if (!textToCopy) return;
+
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                btnText.textContent = 'Copied';
+                setTimeout(() => btnText.textContent = 'Copy', 1000);
+            } catch (err) {
+                const textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textArea);
+                btnText.textContent = 'Copied';
+                setTimeout(() => btnText.textContent = 'Copy', 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>
