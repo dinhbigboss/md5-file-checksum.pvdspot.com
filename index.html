@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD5 File Checksum - Free Online Hash Checker</title>
+    <meta name="description" content="Free online tool to check MD5 file checksums. Secure, client-side processing for files of any size. verify file integrity instantly.">
+    <meta name="keywords" content="md5, checksum, hash, file hash, md5 checker, online md5, file integrity">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://md5-file-checksum.pvdspot.com/">
+    <meta property="og:title" content="MD5 File Checksum - Secure & Fast">
+    <meta property="og:description" content="Verify file integrity with our free, client-side MD5 checksum tool. No file upload required.">
+    <meta property="og:image" content="https://md5-file-checksum.pvdspot.com/og-image.svg">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://md5-file-checksum.pvdspot.com/">
+    <meta property="twitter:title" content="MD5 File Checksum - Secure & Fast">
+    <meta property="twitter:description" content="Verify file integrity with our free, client-side MD5 checksum tool. No file upload required.">
+    <meta property="twitter:image" content="https://md5-file-checksum.pvdspot.com/og-image.svg">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" href="/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                            950: '#1e1b4b',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.2/spark-md5.min.js"></script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass {
+            background: rgba(30, 27, 75, 0.7);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .dark .glass-card {
+            background: rgba(17, 24, 39, 0.4);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
+    <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-brand-400/20 blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/20 blur-[100px] animate-pulse delay-1000"></div>
+    </div>
+    <header class="sticky top-0 z-50 w-full glass transition-all duration-300">
+        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-2 group">
+                <div class="relative w-8 h-8 transition-transform group-hover:scale-105">
+                    <img src="/favicon.svg" alt="MD5 File Checksum Logo" class="w-full h-full object-contain drop-shadow-md">
+                </div>
+                <span class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-indigo-500 dark:from-brand-400 dark:to-indigo-300">
+                    MD5 File Checksum
+                </span>
+            </a>
+            <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500" aria-label="Toggle Dark Mode">
+                <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-400"></i>
+                <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-gray-600"></i>
+            </button>
+        </div>
+    </header>
+    <main class="flex-grow container mx-auto px-4 py-12 flex flex-col items-center">
+        <div class="text-center mb-12 max-w-2xl animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+                Check MD5 File Checksum
+            </h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                Verify file integrity instantly. Secure, client-side processing ensuring your files never leave your device.
+            </p>
+        </div>
+        <div class="w-full max-w-3xl glass-card rounded-2xl p-6 md:p-8 mb-16 animate-slide-up delay-100">
+            <div id="drop-zone" class="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 md:p-12 text-center hover:border-brand-500 dark:hover:border-brand-400 transition-colors cursor-pointer bg-gray-50/50 dark:bg-gray-800/50 group">
+                <input type="file" id="file-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" multiple aria-label="Select files to check MD5 checksum">
+                <div class="flex flex-col items-center justify-center space-y-4 pointer-events-none">
+                    <div class="p-4 bg-brand-100 dark:bg-brand-900/50 rounded-full text-brand-600 dark:text-brand-400 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="upload-cloud" class="w-8 h-8 md:w-10 md:h-10"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-lg font-medium">Click to upload or drag and drop</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Any file type (Max 10 files at once)</p>
+                    </div>
+                </div>
+            </div>
+            <div id="results-area" class="mt-8 space-y-4 hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Results</h2>
+                    <button id="clear-all" class="text-sm text-red-500 hover:text-red-600 font-medium hidden">Clear All</button>
+                </div>
+                <div id="file-list" class="space-y-3">
+                </div>
+            </div>
+        </div>
+        <section class="w-full max-w-3xl mb-16 animate-slide-up delay-200">
+            <h2 class="text-2xl font-bold mb-6 text-center">How to Use</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-lg mb-4">1</div>
+                    <h3 class="font-semibold mb-2">Select Files</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Click the upload area or drag and drop up to 10 files.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-lg mb-4">2</div>
+                    <h3 class="font-semibold mb-2">Wait for Processing</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Your browser calculates the MD5 hash locally. No upload needed.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-brand-100 dark:bg-brand-900 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-lg mb-4">3</div>
+                    <h3 class="font-semibold mb-2">Get Results</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">View and copy the MD5 checksum hash for verification.</p>
+                </div>
+            </div>
+        </section>
+        <section class="w-full max-w-3xl mb-12 animate-slide-up delay-300">
+            <h2 class="text-2xl font-bold mb-6 text-center">Frequently Asked Questions</h2>
+            <div class="space-y-4" id="faq-container">
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-800/50" aria-expanded="false">
+                        <span class="font-medium">Is it safe to use this tool?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden px-6 pb-4 text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700/50 pt-4">
+                        <p>Yes, absolutely. All processing happens entirely within your web browser (client-side). Your files are never uploaded to our servers or any third party.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-800/50" aria-expanded="false">
+                        <span class="font-medium">Is there a file size limit?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden px-6 pb-4 text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700/50 pt-4">
+                        <p>Technically, there is no hard limit, but performance depends on your device's memory and processing power. Very large files (multi-gigabyte) might take longer to process.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-800/50" aria-expanded="false">
+                        <span class="font-medium">Why do I need to check MD5 checksums?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden px-6 pb-4 text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700/50 pt-4">
+                        <p>MD5 checksums help verify file integrity. By comparing the hash of a downloaded file with the original source, you can ensure the file hasn't been corrupted or tampered with.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-800/50" aria-expanded="false">
+                        <span class="font-medium">Does this tool support other hash algorithms?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden px-6 pb-4 text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700/50 pt-4">
+                        <p>Currently, this tool is specialized for MD5. We focus on providing the fastest and most reliable MD5 generation experience.</p>
+                    </div>
+                </div>
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex items-center justify-between focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-800/50" aria-expanded="false">
+                        <span class="font-medium">Is this tool free?</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="hidden px-6 pb-4 text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700/50 pt-4">
+                        <p>Yes, MD5 File Checksum is completely free to use without any restrictions or hidden costs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div class="md:col-span-2">
+                    <a href="/" class="flex items-center space-x-2 mb-4">
+                        <img src="/favicon.svg" alt="MD5 File Checksum Logo" class="w-6 h-6">
+                        <span class="text-lg font-bold text-gray-900 dark:text-white">MD5 File Checksum</span>
+                    </a>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-xs">
+                        A secure, fast, and free online tool for verifying file integrity using MD5 algorithms. Built with privacy and performance in mind.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-gray-900 dark:text-white">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+                        <li><a href="https://pvdspot.com/privacy-policy.html" target="_blank" rel="noopener noreferrer" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Privacy Policy</a></li>
+                        <li><a href="https://pvdspot.com/terms-of-use.html" target="_blank" rel="noopener noreferrer" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Terms of Use</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-gray-900 dark:text-white">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+                        <li><a href="https://pvdspot.com/about-us.html" target="_blank" rel="noopener noreferrer" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                <p>&copy; <span id="current-year"></span> <a href="/" class="hover:text-brand-600 dark:hover:text-brand-400">MD5 File Checksum</a>. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <div id="cookie-banner" class="fixed bottom-4 right-4 max-w-sm w-full glass-card p-6 rounded-xl shadow-2xl z-50 transform translate-y-full opacity-0 transition-all duration-500">
+        <div class="flex items-start space-x-4">
+            <i data-lucide="cookie" class="w-6 h-6 text-brand-500 flex-shrink-0 mt-1"></i>
+            <div>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                    We use cookies to enhance your experience and analyze traffic. By continuing, you agree to our use of cookies.
+                </p>
+                <button id="accept-cookies" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-brand-500/30">
+                    Got It
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        lucide.createIcons();
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        });
+        const faqButtons = document.querySelectorAll('#faq-container button');
+        faqButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const expanded = button.getAttribute('aria-expanded') === 'true';
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                button.setAttribute('aria-expanded', !expanded);
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        const cookieBanner = document.getElementById('cookie-banner');
+        const acceptCookies = document.getElementById('accept-cookies');
+        if (!localStorage.getItem('cookiesAccepted')) {
+            setTimeout(() => {
+                cookieBanner.classList.remove('translate-y-full', 'opacity-0');
+            }, 1000);
+        }
+        acceptCookies.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            cookieBanner.classList.add('translate-y-full', 'opacity-0');
+        });
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const resultsArea = document.getElementById('results-area');
+        const fileList = document.getElementById('file-list');
+        const clearAllBtn = document.getElementById('clear-all');
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+        function highlight(e) {
+            dropZone.classList.add('border-brand-500', 'bg-brand-50', 'dark:bg-brand-900/20');
+        }
+        function unhighlight(e) {
+            dropZone.classList.remove('border-brand-500', 'bg-brand-50', 'dark:bg-brand-900/20');
+        }
+        dropZone.addEventListener('drop', handleDrop, false);
+        fileInput.addEventListener('change', handleFiles, false);
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles({ target: { files: files } });
+        }
+        function handleFiles(e) {
+            const files = [...e.target.files];
+            if (files.length === 0) return;
+            
+            fileList.innerHTML = '';
+
+            const maxFiles = 10;
+            const filesToProcess = files.slice(0, maxFiles);
+            if (files.length > maxFiles) {
+                alert(`You can only upload up to ${maxFiles} files at a time.`);
+            }
+            resultsArea.classList.remove('hidden');
+            clearAllBtn.classList.remove('hidden');
+            filesToProcess.forEach(processFile);
+            fileInput.value = '';
+        }
+        function processFile(file) {
+            const id = Math.random().toString(36).substr(2, 9);
+            const item = document.createElement('div');
+            item.className = 'glass-card p-4 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-fade-in';
+            item.innerHTML = `
+                <div class="flex items-center space-x-3 overflow-hidden">
+                    <div class="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg text-gray-500 flex-shrink-0">
+                        <i data-lucide="file" class="w-5 h-5"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <p class="font-medium text-sm truncate max-w-[200px] md:max-w-xs" title="${file.name}">${file.name}</p>
+                        <p class="text-xs text-gray-500">${formatSize(file.size)}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 w-full md:w-auto">
+                    <div class="flex-grow md:flex-grow-0 relative group w-full md:w-64">
+                        <input type="text" id="hash-${id}" readonly value="Calculating..." aria-label="MD5 Hash Result for ${file.name}"
+                            class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md py-2 px-3 text-sm font-mono text-gray-600 dark:text-gray-300 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                    </div>
+                    <button onclick="copyHash('hash-${id}')" class="p-2 text-gray-500 hover:text-brand-600 dark:hover:text-brand-400 transition-colors" title="Copy Hash" aria-label="Copy Hash">
+                        <i data-lucide="copy" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            `;
+            fileList.insertBefore(item, fileList.firstChild);
+            lucide.createIcons();
+            calculateMD5(file).then(hash => {
+                const input = document.getElementById(`hash-${id}`);
+                if (input) {
+                    input.value = hash;
+                    input.classList.remove('text-gray-600', 'dark:text-gray-300');
+                    input.classList.add('text-brand-600', 'dark:text-brand-400', 'font-bold');
+                }
+            }).catch(err => {
+                const input = document.getElementById(`hash-${id}`);
+                if (input) input.value = "Error calculating hash";
+                console.error(err);
+            });
+        }
+        function calculateMD5(file) {
+            return new Promise((resolve, reject) => {
+                const blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+                const chunkSize = 2097152;
+                const chunks = Math.ceil(file.size / chunkSize);
+                let currentChunk = 0;
+                const spark = new SparkMD5.ArrayBuffer();
+                const fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    spark.append(e.target.result);
+                    currentChunk++;
+                    if (currentChunk < chunks) {
+                        loadNext();
+                    } else {
+                        resolve(spark.end());
+                    }
+                };
+                fileReader.onerror = function () {
+                    reject("oops, something went wrong.");
+                };
+                function loadNext() {
+                    const start = currentChunk * chunkSize;
+                    const end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+                    fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+                }
+                loadNext();
+            });
+        }
+        function formatSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        window.copyHash = function(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value).then(() => {
+                const btn = copyText.parentElement.nextElementSibling;
+                const originalIcon = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="check" class="w-5 h-5 text-green-500"></i>';
+                lucide.createIcons();
+                setTimeout(() => {
+                    btn.innerHTML = originalIcon;
+                    lucide.createIcons();
+                }, 2000);
+            });
+        }
+        clearAllBtn.addEventListener('click', () => {
+            fileList.innerHTML = '';
+            resultsArea.classList.add('hidden');
+            clearAllBtn.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
