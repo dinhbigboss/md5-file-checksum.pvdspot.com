@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://md5-file-checksum.pvdspot.com/sitemap.xml
